@@ -30,5 +30,15 @@ Sigue estos pasos para instalar y ejecutar el proyecto:
    ```shell
    git clone https://github.com/StephanyCS1/taxislibres-prueba.git
 
+2. Ejecuta el archivo Docker Compose que se proporciona en el repositorio. Este archivo se encargará de crear los contenedores necesarios para la base de datos y el proyecto en sí. Esto te permitirá acceder al proyecto a través de la dirección http://localhost:8080.
+   
+   ```shell
+   docker-compose up
 
+Con estos pasos, el proyecto estará instalado y funcionando, listo para ser utilizado.
 
+## Documentación de API
+
+La documentación de la API se ha generado con Swagger UI, una herramienta que facilita la exploración y comprensión de los endpoints disponibles en el proyecto. Para acceder a la documentación, simplemente visita el siguiente enlace:
+[Documentación de la API](http://localhost:8080/swagger-ui/index.html#/)
+Esta documentación proporciona detalles sobre cómo interactuar con los diferentes endpoints, qué parámetros se requieren y qué respuestas se pueden esperar.
