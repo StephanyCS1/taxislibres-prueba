@@ -1,0 +1,22 @@
+version:  '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: mysql
+    environment:
+      - MYSQL_DATABASE=pruebatecnicataxislibres
+      - MYSQL_ROOT_PASSWORD=tefis
+      - MYSQL_PASSWORD=tefis
+
+  pruebatecnicataxislibres:
+    build: .
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: tefis
