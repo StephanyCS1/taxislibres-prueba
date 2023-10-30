@@ -9,7 +9,6 @@ services:
       - MYSQL_DATABASE=pruebatecnicataxislibres
       - MYSQL_ROOT_PASSWORD=tefis
       - MYSQL_PASSWORD=tefis
-      - MYSQL_USER=root
 
   pruebatecnicataxislibres:
     build: .
