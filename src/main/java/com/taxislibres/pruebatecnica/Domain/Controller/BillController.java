@@ -5,6 +5,8 @@ import com.taxislibres.pruebatecnica.Domain.Models.Bill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.NewBill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.ShowDataBill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.UpdateBill;
+import com.taxislibres.pruebatecnica.Domain.Models.User;
+import com.taxislibres.pruebatecnica.infrastructure.Repository.UserRepository;
 import com.taxislibres.pruebatecnica.infrastructure.Service.ServiceImplement.BillServiceImplement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,22 +32,33 @@ public class BillController {
     @Autowired
     private BillServiceImplement billServiceImplement;
 
+    @Autowired
+    private UserRepository userRepository;
+
     /**
      * Crea una nueva factura.
      *
      * @param newBill Datos de la nueva factura.
      * @return ResponseEntity con los detalles de la factura creada en caso de éxito, o un mensaje de error en caso contrario.
      */
-    @PostMapping
-    @PreAuthorize("HasRole('ROLE_USER')")
-    public ResponseEntity<?> createBill(@Valid @RequestBody NewBill newBill) {
-        try {
-            ShowDataBill bill = billServiceImplement.createBill(newBill);
-            Map<String, Object> data = new HashMap<>();
-            return new ResponseEntity<>(bill, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al crear la factura: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping("/{userId}")
+    public ResponseEntity<?> createBill(@Valid @RequestBody NewBill newBill, @PathVariable Long userId ) {
+        boolean userExist = userRepository.existsById(userId);
+        if (userExist) {
+            try {
+                Bill bill1 = billServiceImplement.createBill(userId, newBill);
+                ShowDataBill dataBill = new ShowDataBill(
+                        bill1.getId(),
+                        bill1.getTotalAmount(),
+                        bill1.getDescription(),
+                        bill1.getUser()
+                );
+                return ResponseEntity.status(HttpStatus.CREATED).body(dataBill);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Error al crear la factura: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+        return ResponseEntity.badRequest().build();
     }
 
     /**
@@ -56,7 +70,7 @@ public class BillController {
      */
     @PatchMapping("/{id}")
     @Transactional
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> updateBill(@PathVariable Long id, @Valid @RequestBody UpdateBill updateBill) {
         try {
             Bill billById = billServiceImplement.getBillById(id);
@@ -77,7 +91,7 @@ public class BillController {
      * @return ResponseEntity con los detalles de la factura eliminada en caso de éxito, o un mensaje de error en caso contrario.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> deleteBillById(@PathVariable Long id) {
         try {
             Bill bill = billServiceImplement.getBillById(id);
@@ -97,7 +111,7 @@ public class BillController {
      * @return ResponseEntity con la lista de todas las facturas en caso de éxito, o un mensaje de error en caso contrario.
      */
     @GetMapping
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getAllBills() {
         try {
             List<ShowDataBill> allBills = billServiceImplement.getAllBills();
@@ -117,7 +131,7 @@ public class BillController {
      * @return ResponseEntity con los detalles de la factura en caso de éxito, o un mensaje de error en caso contrario.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getBillById(@PathVariable Long id) {
         try {
             Bill billById = billServiceImplement.getBillById(id);
@@ -137,7 +151,7 @@ public class BillController {
      * @return ResponseEntity con la lista de facturas del usuario en caso de éxito, o un mensaje de error en caso contrario.
      */
     @GetMapping("/userBills/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getBillsByUserId(@PathVariable Long id) {
         try {
             List<ShowDataBill> billsByUserId = billServiceImplement.getBillByUserId(id);

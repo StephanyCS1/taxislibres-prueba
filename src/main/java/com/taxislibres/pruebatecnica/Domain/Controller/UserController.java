@@ -53,7 +53,7 @@ public class UserController {
      * @return ResponseEntity con los detalles del usuario actualizado en caso de éxito, o un mensaje de error en caso contrario.
      */
     @PatchMapping("/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUser updateUser){
         try {
@@ -75,7 +75,7 @@ public class UserController {
      * @return ResponseEntity con la lista de todos los usuarios en caso de éxito, o un mensaje de error en caso contrario.
      */
     @GetMapping
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getAllUser(){
         try{
             List<User> listUsers = userServiceImplement.getUsersList();
@@ -92,7 +92,7 @@ public class UserController {
      * @return ResponseEntity con los detalles del usuario en caso de éxito, o un mensaje de error en caso contrario.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getUserById(@PathVariable Long id){
         try{
             User userById = userServiceImplement.getUserById(id);
@@ -112,7 +112,7 @@ public class UserController {
      * @return ResponseEntity con los detalles del usuario eliminado en caso de éxito, o un mensaje de error en caso contrario.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("HasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> deleteUserById(@PathVariable Long id){
         try{
             User userById = userServiceImplement.getUserById(id);

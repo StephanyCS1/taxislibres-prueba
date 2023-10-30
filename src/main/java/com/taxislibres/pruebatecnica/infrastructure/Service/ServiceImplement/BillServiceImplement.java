@@ -4,13 +4,16 @@ import com.taxislibres.pruebatecnica.Domain.Models.Bill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.NewBill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.ShowDataBill;
 import com.taxislibres.pruebatecnica.Domain.Models.Dto.Bill.UpdateBill;
+import com.taxislibres.pruebatecnica.Domain.Models.User;
 import com.taxislibres.pruebatecnica.infrastructure.Repository.BillRepository;
+import com.taxislibres.pruebatecnica.infrastructure.Repository.UserRepository;
 import com.taxislibres.pruebatecnica.infrastructure.Service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -22,6 +25,8 @@ public class BillServiceImplement implements BillService {
     @Autowired
     private BillRepository billRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     /**
      * Crea una nueva factura en el sistema a partir de los datos proporcionados en la solicitud.
      *
@@ -29,13 +34,18 @@ public class BillServiceImplement implements BillService {
      * @return Datos de la factura creada.
      */
     @Override
-    public ShowDataBill createBill(NewBill newBill) {
+    public Bill createBill(Long id, NewBill newBill) {
         Bill bill = new Bill();
-        bill.setTotalAmount(newBill.getTotalAmount());
-        bill.setDescription(newBill.getDescription());
-        bill.setUser(newBill.getUser());
-        ShowDataBill showData = new ShowDataBill(new Bill());
-        return showData;
+
+        if(userRepository.findById(id) != null) {
+            User userExist = userRepository.findById(id).orElseThrow( () ->
+                    new IllegalStateException("No fue encontrada el usuario con el ID: " + id));
+            bill.setUser(userExist);
+            bill.setTotalAmount(newBill.getTotalAmount());
+            bill.setDescription(newBill.getDescription());
+            billRepository.save(bill);
+        }
+        return bill;
     }
 
     /**

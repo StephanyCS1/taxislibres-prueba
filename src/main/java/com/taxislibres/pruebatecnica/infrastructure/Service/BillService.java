@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface BillService {
-    ShowDataBill createBill(NewBill newBill);
+    Bill createBill(Long id, NewBill newBill);
     UpdateBill updateBill(Long id, UpdateBill updateBill);
     void deleteBillById(Long id);
     List<ShowDataBill> getAllBills();
