@@ -9,7 +9,6 @@ services:
       - MYSQL_DATABASE=pruebatecnicataxislibres
       - MYSQL_ROOT_PASSWORD=tefis
       - MYSQL_PASSWORD=tefis
-      - MYSQL_USER=root
 
   pruebatecnicataxislibres:
     build: .
@@ -17,6 +16,6 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - SPRING_DATASOURCE_URL= jdbc:mysql://mysql:3306/pruebatecnicataxislibres
+      - SPRING_DATASOURCE_URL= jdbc:mysql://mysql:3306/pruebatecnicataxislibres?user=root&password=tefis
     depends_on:
       - mysql
