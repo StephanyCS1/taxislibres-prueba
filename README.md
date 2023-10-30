@@ -1,24 +1,44 @@
 # Prueba Técnica Microservicios TaxisLibres
 
-Descripción concisa de lo que hace tu proyecto.
+El proyecto se enfoca en la creación de entidades de User y Bills. La entidad User permite realizar operaciones de registro y autenticación, generando un token de acceso que habilita el uso de diversos endpoints. Además, se puede acceder a las facturas creadas, identificar las facturas asociadas a un usuario y ver información detallada de una factura específica. Las entidades User y Bills cuentan con operaciones básicas de CRUD (Crear, Leer, Actualizar y Eliminar). El proyecto se ha implementado con medidas de seguridad basadas en JSON Web Tokens (JWT) para garantizar un acceso controlado y seguro.
 
 ## Contenido
 
 - [Requisitos Previos](#requisitos-previos)
+  El proyecto se desarrolló utilizando Java 17, MySQL y Spring Boot.
 - [Instalación](#instalación)
-- [Uso](#uso)
+  El repositorio incluye un archivo Docker Compose que simplifica la instalación al crear contenedores para la base de datos y el proyecto.
 - [Documentación de API](#documentación-de-api)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
+  La documentación de la API se generó utilizando Swagger UI y está disponible en http://localhost:8080/swagger-ui/index.html#/ para ayudarte a entender y utilizar los endpoints de la aplicación.
 
 ## Requisitos Previos
 
-Enumera los requisitos previos necesarios para ejecutar tu proyecto, como versiones de software, bibliotecas o servicios externos.
+Para ejecutar este proyecto, debes contar con las siguientes dependencias previamente instaladas:
+
+- **Java 17:** Asegúrate de tener instalada la versión 17 de Java en tu sistema.
+- **MySQL:** Necesitarás tener un servidor MySQL en funcionamiento para que el proyecto pueda almacenar y gestionar los datos.
+- **Spring Boot:** Este proyecto está basado en Spring Boot, por lo que asegúrate de tenerlo configurado correctamente.
+
+Verifica que todas estas dependencias estén instaladas y funcionando de manera adecuada antes de continuar con la instalación.
 
 ## Instalación
 
-Proporciona instrucciones claras y detalladas sobre cómo instalar y configurar tu proyecto. Esto podría incluir comandos para clonar el repositorio, configurar variables de entorno, instalar dependencias, etc.
+Sigue estos pasos para instalar y ejecutar el proyecto:
 
-```shell
-https://github.com/StephanyCS1/taxislibres-prueba.git
+1. Clona el repositorio desde GitHub usando el siguiente comando:
 
+   ```shell
+   git clone https://github.com/StephanyCS1/taxislibres-prueba.git
+
+2. Ejecuta el archivo Docker Compose que se proporciona en el repositorio. Este archivo se encargará de crear los contenedores necesarios para la base de datos y el proyecto en sí. Esto te permitirá acceder al proyecto a través de la dirección http://localhost:8080.
+   
+   ```shell
+   docker-compose up
+
+Con estos pasos, el proyecto estará instalado y funcionando, listo para ser utilizado.
+
+## Documentación de API
+
+La documentación de la API se ha generado con Swagger UI, una herramienta que facilita la exploración y comprensión de los endpoints disponibles en el proyecto. Para acceder a la documentación, simplemente visita el siguiente enlace:
+[Documentación de la API](http://localhost:8080/swagger-ui/index.html#/)
+Esta documentación proporciona detalles sobre cómo interactuar con los diferentes endpoints, qué parámetros se requieren y qué respuestas se pueden esperar.
