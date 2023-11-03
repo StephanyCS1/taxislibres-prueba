@@ -24,9 +24,6 @@ public class BillServiceImplement implements BillService {
 
     @Autowired
     private BillRepository billRepository;
-
-    @Autowired
-    private UserRepository userRepository;
     /**
      * Crea una nueva factura en el sistema a partir de los datos proporcionados en la solicitud.
      *
@@ -34,18 +31,13 @@ public class BillServiceImplement implements BillService {
      * @return Datos de la factura creada.
      */
     @Override
-    public Bill createBill(Long id, NewBill newBill) {
+    public ShowDataBill createBill(NewBill newBill) {
         Bill bill = new Bill();
-
-        if(userRepository.findById(id) != null) {
-            User userExist = userRepository.findById(id).orElseThrow( () ->
-                    new IllegalStateException("No fue encontrada el usuario con el ID: " + id));
-            bill.setUser(userExist);
-            bill.setTotalAmount(newBill.getTotalAmount());
-            bill.setDescription(newBill.getDescription());
-            billRepository.save(bill);
-        }
-        return bill;
+        bill.setTotalAmount(newBill.getTotalAmount());
+        bill.setDescription(newBill.getDescription());
+        bill.setUser(newBill.getUser());
+        ShowDataBill showData = new ShowDataBill(new Bill());
+        return showData;
     }
 
     /**

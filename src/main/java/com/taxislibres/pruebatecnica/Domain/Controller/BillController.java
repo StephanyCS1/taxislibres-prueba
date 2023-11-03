@@ -32,33 +32,26 @@ public class BillController {
     @Autowired
     private BillServiceImplement billServiceImplement;
 
-    @Autowired
-    private UserRepository userRepository;
-
     /**
      * Crea una nueva factura.
      *
      * @param newBill Datos de la nueva factura.
      * @return ResponseEntity con los detalles de la factura creada en caso de éxito, o un mensaje de error en caso contrario.
      */
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> createBill(@Valid @RequestBody NewBill newBill, @PathVariable Long userId ) {
-        boolean userExist = userRepository.existsById(userId);
-        if (userExist) {
+    @PostMapping
+    public ResponseEntity<?> createBill(@Valid @RequestBody NewBill newBill) {
             try {
-                Bill bill1 = billServiceImplement.createBill(userId, newBill);
+                ShowDataBill bill = billServiceImplement.createBill(newBill);
                 ShowDataBill dataBill = new ShowDataBill(
-                        bill1.getId(),
-                        bill1.getTotalAmount(),
-                        bill1.getDescription(),
-                        bill1.getUser()
+                        bill.getId(),
+                        bill.getTotalAmount(),
+                        bill.getDescription(),
+                        bill.getUser()
                 );
                 return ResponseEntity.status(HttpStatus.CREATED).body(dataBill);
             } catch (Exception e) {
                 return new ResponseEntity<>("Error al crear la factura: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
-        return ResponseEntity.badRequest().build();
     }
 
     /**

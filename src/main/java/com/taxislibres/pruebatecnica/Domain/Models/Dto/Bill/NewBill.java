@@ -15,4 +15,6 @@ public class NewBill {
     private Double totalAmount;
     @NotBlank
     private String description;
+    @NotNull
+    private User user;
 }
